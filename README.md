@@ -36,3 +36,10 @@ $ heroku open
 For more information about using Java on Heroku, see these Dev Center articles:
 
 - [Java on Heroku](https://devcenter.heroku.com/categories/java)
+
+## Known Problems
+
+The persistence layer depends directly on the REST dto objects.
+
+We should have separate POJO classes to represent the DB data and map REST DTOs to DB POJOs.
+However, on a simple app like this i believe we're OK with removing that layer.

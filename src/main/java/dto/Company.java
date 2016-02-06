@@ -1,34 +1,18 @@
 package dto;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Company {
-    private int ID;
-    private String Name;
-    private String Adress;
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
     
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String Name) {
-        this.Name = Name;
-    }
-
-    public String getAdress() {
-        return Adress;
-    }
-
-    public void setAdress(String Adress) {
-        this.Adress = Adress;
-    }
+    @SerializedName("id")
+    public String Id;
     
+    @SerializedName("name")
+    public String Name;
+    
+    @SerializedName("adress")
+    public String Adress;
+
 }
 
 //

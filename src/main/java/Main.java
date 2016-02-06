@@ -19,7 +19,7 @@ public class Main {
     Spark.port(Integer.valueOf(System.getenv("PORT")));
     Spark.staticFileLocation("/public");
 
-    // TODO
+    // TODO make home the runable class
     Home.main(args);
     
     Spark.get("/hello", (req, res) -> "Hello World");
