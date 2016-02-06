@@ -6,10 +6,9 @@ import java.util.Map;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static spark.Spark.*;
 import spark.template.freemarker.FreeMarkerEngine;
 import spark.ModelAndView;
-import static spark.Spark.get;
+import spark.Spark;
 
 import com.heroku.sdk.jdbc.DatabaseUrl;
 
@@ -17,19 +16,22 @@ public class Main {
 
   public static void main(String[] args) {
 
-    port(Integer.valueOf(System.getenv("PORT")));
-    staticFileLocation("/public");
+    Spark.port(Integer.valueOf(System.getenv("PORT")));
+    Spark.staticFileLocation("/public");
 
-    get("/hello", (req, res) -> "Hello World");
+    // TODO
+    Home.main(args);
+    
+    Spark.get("/hello", (req, res) -> "Hello World");
 
-    get("/", (request, response) -> {
+    Spark.get("/", (request, response) -> {
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("message", "Hello World!");
 
             return new ModelAndView(attributes, "index.ftl");
         }, new FreeMarkerEngine());
 
-    get("/db", (req, res) -> {
+    Spark.get("/db", (req, res) -> {
       Connection connection = null;
       Map<String, Object> attributes = new HashMap<>();
       try {
