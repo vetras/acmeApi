@@ -2,7 +2,7 @@ package dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Company {
+public class CompanyDto {
     
     @SerializedName("id")
     public String Id;

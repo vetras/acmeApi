@@ -1,50 +1,43 @@
 package service;
 
-import dto.Company;
-import java.util.ArrayList;
+import dto.CompanyDto;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+
+import persistence.HerokuPostgress;
+import persistence.IPersistence;
+import persistence.dao.CompanyDao;
+import persistence.entity.CompanyEntity;
 
 public class CompanyService {
 
-    // TODO this is dummy
-    private static final List<Company> list = new ArrayList();
+    private final CompanyDao dao;
+
+    private final IPersistence persistence;
 
     public CompanyService() {
-        Company a = new Company();
-        Company b = new Company();
-        a.Id = "1";
-        b.Id = "2";
-        a.Name = "barbosa";
-        b.Name = "vidigal";
-        a.Adress = "aveiro";
-        b.Adress = "viseu";
-        list.add(a);
-        list.add(b);
+        persistence = new HerokuPostgress();
+        EntityManager em = persistence.createEntityManager();
+        dao = new CompanyDao(em);
     }
 
-    public List<Company> getAll() {
-        return list;
+    public List<CompanyDto> getAll() {
+        List<CompanyEntity> entities = dao.readAll();
+
+        ModelMapper mapper = new ModelMapper();
+        Type targetListType = new TypeToken<List<CompanyDto>>() { }.getType();
+        List<CompanyDto> dtos = mapper.map(entities, targetListType);
+
+        return dtos;
     }
 
-    public String create(Company company) {
-        company.Id = getNextId();
-        list.add(company);
-        return get(company.Id).Id;
-    }
+    public CompanyDto get(String companyId) {
 
-    public Company get(String companyId) {
-        List<Company> data = list.stream().filter(p -> p.Id.equals(companyId)).collect(Collectors.toList());
-
-        if (data.size() == 1) {
-            return data.get(0);
-        }
         return null;
-    }
-
-    // TODO not done
-    private String getNextId() {
-        return "5";
     }
 
 }

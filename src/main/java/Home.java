@@ -1,11 +1,13 @@
 
 import spark.Spark;
 
-import dto.Company;
+import dto.CompanyDto;
+import java.sql.Connection;
 
 import java.util.List;
 import org.eclipse.jetty.http.HttpStatus;
-import service.CompanyService;
+import persistence.HerokuPostgress;
+import service.CompanyServiceDummy;
 import util.JsonUtil;
 import static util.JsonUtil.json;
 
@@ -27,9 +29,9 @@ public class Home {
         Spark.get(BaseUrl + "/company", (req, response) -> {
             response.type("application/json");
 
-            CompanyService service = new CompanyService();
+            CompanyServiceDummy service = new CompanyServiceDummy();
 
-            List<Company> dtos = service.getAll();
+            List<CompanyDto> dtos = service.getAll();
 
             return dtos;
         }, json());
@@ -39,9 +41,9 @@ public class Home {
 
             String id = req.params(":id");
 
-            CompanyService service = new CompanyService();
+            CompanyServiceDummy service = new CompanyServiceDummy();
 
-            Company dto = service.get(id);
+            CompanyDto dto = service.get(id);
 
             if (dto == null) {
                 response.status(HttpStatus.NOT_FOUND_404);
@@ -54,11 +56,11 @@ public class Home {
         Spark.post(BaseUrl + "/company", (req, response) -> {
             response.type("application/json");
 
-            JsonUtil<Company> util = new JsonUtil(Company.class);
+            JsonUtil<CompanyDto> util = new JsonUtil(CompanyDto.class);
 
-            Company company = util.fromJson(req.body());
+            CompanyDto company = util.fromJson(req.body());
 
-            CompanyService service = new CompanyService();
+            CompanyServiceDummy service = new CompanyServiceDummy();
 
             String id = service.create(company);
 
