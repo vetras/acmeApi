@@ -21,6 +21,6 @@ public class CompanyDto {
 //? Address
 //? City
 //? Country
-//? E­mail (not required)
+//? E-mail (not required)
 //? Phone Number (not required)
 //? One or more employees
