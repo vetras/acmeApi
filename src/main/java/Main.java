@@ -23,11 +23,11 @@ public class Main {
     public static void main(String[] args) {
 
         String port = System.getenv("PORT");
-        
+
         if (port == null || port.isEmpty()) {
             port = "5000";
         }
-        
+
         Spark.port(Integer.valueOf(port));
         Spark.staticFileLocation("/public");
 
@@ -81,6 +81,15 @@ public class Main {
             return service.get(id);
 
         }, json());
+
+        // =====================================================================
+        // =====================================================================
+        
+        Spark.get("/", (request, response) -> {
+            Map<String, Object> attributes = new HashMap<>();
+            attributes.put("message", "Hello World!");
+            return new ModelAndView(attributes, "index.ftl");
+        }, new FreeMarkerEngine());
 
         Spark.get("/db", (req, res) -> {
             Connection connection = null;
