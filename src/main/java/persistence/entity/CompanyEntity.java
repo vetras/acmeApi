@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "COMPANY")
-@NamedQuery(name = "Film.findAll", query = "SELECT c FROM company c order by c.id")
+@NamedQuery(name = "Company.findAll", query = "SELECT c FROM company c order by c.id")
 public class CompanyEntity implements java.io.Serializable {
 
     private static final long serialVersionUID = -4974733123803118872L;
@@ -37,8 +37,5 @@ public class CompanyEntity implements java.io.Serializable {
     public void setName(String Name) {
         this.Name = Name;
     }
-    
-    
-    
 
 }

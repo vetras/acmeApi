@@ -5,34 +5,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CompanyServiceDummy {
+public class CompanyServiceDummy implements ICompany {
 
-    // TODO this is dummy
     private static final List<CompanyDto> list = new ArrayList();
 
     public CompanyServiceDummy() {
         CompanyDto a = new CompanyDto();
         CompanyDto b = new CompanyDto();
+        
         a.Id = "1";
         b.Id = "2";
+        
         a.Name = "barbosa";
         b.Name = "vidigal";
+        
         a.Adress = "aveiro";
         b.Adress = "viseu";
+        
         list.add(a);
         list.add(b);
     }
 
+    @Override
     public List<CompanyDto> getAll() {
         return list;
     }
 
+    @Override
     public String create(CompanyDto company) {
         company.Id = getNextId();
         list.add(company);
         return get(company.Id).Id;
     }
 
+    @Override
     public CompanyDto get(String companyId) {
         List<CompanyDto> data = list.stream().filter(p -> p.Id.equals(companyId)).collect(Collectors.toList());
 

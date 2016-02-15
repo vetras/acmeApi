@@ -29,6 +29,10 @@ public class HerokuPostgress implements IPersistence {
     }
 
     private void initializeFactory() {
+        
+        // TODO maybe this can be done with this
+        // Connection con = DatabaseUrl.extract().getConnection();
+        
         URI dbUri;
 
         String env = System.getenv("DATABASE_URL");
@@ -55,6 +59,7 @@ public class HerokuPostgress implements IPersistence {
         //if(CustomLogger.LOG_LEVEL.intValue() <= Level.FINE.intValue()){
         //	properties.put("hibernate.show_sql", "true");
         //}
+        
         emFactory = Persistence.createEntityManagerFactory("default", properties);
     }
 
