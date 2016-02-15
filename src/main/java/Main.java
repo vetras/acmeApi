@@ -9,82 +9,24 @@ import spark.ModelAndView;
 import spark.Spark;
 
 import com.heroku.sdk.jdbc.DatabaseUrl;
-import dto.CompanyDto;
-import java.util.List;
-import org.eclipse.jetty.http.HttpStatus;
-import service.CompanyServiceDummy;
-import util.JsonUtil;
-import static util.JsonUtil.json;
+import resource.Company;
+import resource.Healthz;
 
 public class Main {
 
     private static final String BaseUrl = "/api/v1";
 
+    // TODO duplicated line to return json
+    // TODO not easy to modify the return type of the API
     public static void main(String[] args) {
 
-        String port = System.getenv("PORT");
+        initSpark();
 
-        if (port == null || port.isEmpty()) {
-            port = "5000";
-        }
-
-        Spark.port(Integer.valueOf(port));
-        Spark.staticFileLocation("/public");
-
-        // TODO duplicated line to return json
-        // TODO not easy to modify the return type of the API
-        Spark.get(BaseUrl + "/health", (req, res) -> "It is Alive !");
-
-        Spark.get(BaseUrl + "/company", (req, response) -> {
-            response.type("application/json");
-
-            CompanyServiceDummy service = new CompanyServiceDummy();
-
-            List<CompanyDto> dtos = service.getAll();
-
-            return dtos;
-        }, json());
-
-        Spark.get(BaseUrl + "/company/:id", (req, response) -> {
-            response.type("application/json");
-
-            String id = req.params(":id");
-
-            CompanyServiceDummy service = new CompanyServiceDummy();
-
-            CompanyDto dto = service.get(id);
-
-            if (dto == null) {
-                response.status(HttpStatus.NOT_FOUND_404);
-            }
-
-            return dto;
-
-        }, json());
-
-        Spark.post(BaseUrl + "/company", (req, response) -> {
-            response.type("application/json");
-
-            JsonUtil<CompanyDto> util = new JsonUtil(CompanyDto.class);
-
-            CompanyDto company = util.fromJson(req.body());
-
-            CompanyServiceDummy service = new CompanyServiceDummy();
-
-            String id = service.create(company);
-
-            if (id == null) {
-                response.status(HttpStatus.UNPROCESSABLE_ENTITY_422);
-                return 0;
-            }
-
-            return service.get(id);
-
-        }, json());
+        new Healthz(BaseUrl).RegisterActions();
+        new Company(BaseUrl).RegisterActions();
 
         // =====================================================================
         // =====================================================================
-        
         Spark.get("/", (request, response) -> {
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("message", "Hello World!");
@@ -122,6 +64,18 @@ public class Main {
             }
         }, new FreeMarkerEngine());
 
+    }
+
+    private static void initSpark() throws NumberFormatException {
+        String port = System.getenv("PORT");
+
+        if (port == null || port.isEmpty()) {
+            port = "5000";
+        }
+
+        Spark.port(Integer.valueOf(port));
+
+        Spark.staticFileLocation("/public");
     }
 
 }
