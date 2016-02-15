@@ -7,21 +7,33 @@ import java.util.stream.Collectors;
 
 public class CompanyServiceDummy implements ICompany {
 
-    private static final List<CompanyDto> list = new ArrayList();
+    private static List<CompanyDto> list = null;
+    
+    private static Integer lastId = 2;
 
     public CompanyServiceDummy() {
+        init();
+    }
+
+    private void init() {
+        if (list != null) {
+            return;
+        }
+        
+        list = new ArrayList();
+                
         CompanyDto a = new CompanyDto();
         CompanyDto b = new CompanyDto();
-        
+
         a.Id = "1";
         b.Id = "2";
-        
+
         a.Name = "barbosa";
         b.Name = "vidigal";
-        
+
         a.Adress = "aveiro";
         b.Adress = "viseu";
-        
+
         list.add(a);
         list.add(b);
     }
@@ -48,9 +60,9 @@ public class CompanyServiceDummy implements ICompany {
         return null;
     }
 
-    // TODO not done
-    private String getNextId() {
-        return "5";
+    private static String getNextId() {
+        lastId++;
+        return lastId.toString();
     }
 
 }
