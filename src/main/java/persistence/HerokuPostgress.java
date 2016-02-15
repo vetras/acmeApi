@@ -55,6 +55,7 @@ public class HerokuPostgress implements IPersistence {
         properties.put("javax.persistence.jdbc.password", password);
         properties.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        // properties.put( "hibernate.hbm2ddl.auto", "create-drop");
 
         //if(CustomLogger.LOG_LEVEL.intValue() <= Level.FINE.intValue()){
         //	properties.put("hibernate.show_sql", "true");
